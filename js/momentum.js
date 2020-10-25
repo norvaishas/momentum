@@ -2,7 +2,8 @@ const time = document.querySelector('#time'),
   greeting = document.querySelector('#greeting'),
   name = document.querySelector('#name'),
   focus = document.querySelector('#focus'),
-  date = document.querySelector('#date');
+  date = document.querySelector('#date'),
+  changeBgBtn = document.querySelectorAll('.bg-button');
 
 const days = [
     'Понедельник',
@@ -13,7 +14,6 @@ const days = [
     'Суббота',
     'Воскресенье'
 ];
-
 const months = [
     'Января',
     'Февраля',
@@ -28,45 +28,91 @@ const months = [
     'Ноября',
     'Декабря'
 ];
+const backgroundsUrls = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14'];
+
+let globalHours = new Date().getHours();
+let timeOfDay = '';
+let difference = 0;
+let greetText = '';
+
+function getTimeOfDay(time) {
+    if (time >= 6 && time < 12) {
+        timeOfDay = 'morning';
+        difference = 6;
+        greetText = 'Good Morning'
+    } else if (time >= 12 && time < 18) {
+        timeOfDay = 'day';
+        difference = 12;
+        greetText = 'Good Afternoon'
+    } else if (time >= 18 && time <= 23) {
+        timeOfDay = 'evening';
+        difference = 18;
+        greetText = 'Good Evening'
+    } else if (time < 6) {
+        timeOfDay = 'night';
+        difference = 0;
+        greetText = 'Good Night'
+    }
+    return {timeOfDay, difference, greetText};
+}
+getTimeOfDay(globalHours);
+
+// Получение рандомной картинки для текущего времени суток
+const mixArray = arr => arr.sort(() => .5 - Math.random());
+let bg = mixArray(backgroundsUrls)[globalHours - difference];
+
 
 const appendZero = num => num < 10 ? `0${num}` : num;
 
-function startTimer() {
+// Смена фона
+function changeBg() {
+    document.body.style.backgroundImage = `url(\'assets/${timeOfDay}/${bg}.jpg\')`;
+}
+
+function initTimer() {
     const now = new Date(),
       hours = now.getHours(),
       minutes = now.getMinutes(),
       seconds = now.getSeconds(),
       year = now.getFullYear(),
       month = months[now.getMonth()],
-      dayOfMont = now.getDate(),
+      dayOfMonth = now.getDate(),
       dayOfWeek = days[now.getDay() - 1];
 
     // Render
-    date.innerHTML = `${dayOfWeek}, ${dayOfMont} ${month} ${year}`;
+    date.innerHTML = `${dayOfWeek}, ${dayOfMonth} ${month} ${year}`;
     time.innerHTML = `${appendZero(hours)}:${appendZero(minutes)}:${appendZero(seconds)}`;
-    setTimeout(startTimer, 1000);
+    greeting.innerHTML = greetText;
+    changeBg();
+
+    setTimeout(initTimer, 1000);
 }
 
-// Переписать на switch/case
-function changeBg() {
-    const hours = appendZero(new Date().getHours());
-    console.log(hours)
-    if (hours > 6 && hours < 12) {
-        greeting.innerHTML = 'Good Morning'
-        document.body.style.backgroundImage = `url(\'assets/morning/${hours}.jpg\')`;
-    } else if (hours >= 12 && hours < 18) {
-        greeting.innerHTML = 'Good Afternoon'
-        document.body.style.backgroundImage = `url(\'assets/day/${hours}.jpg\')`;
-    } else if (hours >= 18 && hours <= 23) {
-        greeting.innerHTML = 'Good Evening'
-        document.body.style.backgroundImage = `url(\'assets/evening/${hours-10}.jpg\')`;
-    } else if (hours < 6) {
-        console.log('Good Night',hours);
-        document.body.style.backgroundImage = `url(\'assets/night/${hours+1}.jpg\')`;
-    } else {
-        console.log('hm')
-    }
-}
+changeBgBtn.forEach(btn => {
+    btn.addEventListener('click', (e) => {
+        // Функция меняющая час назад или вперед
+        switch (e.target.textContent) {
+
+            case 'Next BG':
+                globalHours++;
+                if (globalHours > 23) globalHours = 0;
+                bg++;
+                getTimeOfDay(globalHours);
+                if (bg > Math.max(...backgroundsUrls)) bg = 0;
+                break;
+
+                case 'Prev BG':
+                    globalHours--;
+                    if (globalHours < 0) globalHours = 23;
+                    bg--;
+                    getTimeOfDay(globalHours);
+                    if (bg < Math.min(...backgroundsUrls)) bg = 14;
+                break;
+        }
+        changeBg();
+        console.log('время = ', globalHours, timeOfDay);
+    })
+})
 
 function getFromLS(keyName, elem) {
     if (localStorage.getItem(keyName) === null || localStorage.getItem(keyName) === '') {
@@ -101,7 +147,7 @@ name.addEventListener('blur', e => {
 
 
 // Run
-startTimer();
-changeBg();
+initTimer();
 getFromLS('name', name);
 getFromLS('focus', focus);
+changeBg();

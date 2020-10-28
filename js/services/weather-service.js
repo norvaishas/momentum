@@ -1,7 +1,7 @@
 export class WeatherService {
 
     constructor() {
-        this._apiBase = 'http://api.openweathermap.org/data/2.5/weather';
+        this._apiBase = 'https://api.openweathermap.org/data/2.5/weather';
         this.key = '9afd8ef178a3471fdc67c6d57e1ae0ce';
     }
 

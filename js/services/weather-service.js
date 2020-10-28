@@ -11,9 +11,17 @@ export class WeatherService {
         const url = `${this._apiBase}?q=${city}&lang=${lang},uk&APPID=${this.key}&units=${units}`;
 
         const result = await fetch(url);
+
         if (!result.ok) {
-            throw new Error(`Не удается получить данные с сервера. Код ошибки: ${result.status}.`);
+            switch (true) {
+                case result.status === 404:
+                    throw new Error(`Кажется вы придумали новый город. Код ошибки: ${result.status}.`);
+                    break;
+                case result.status > 299:
+                    throw new Error(`Не удалось получить данные с сервера. Код ошибки: ${result.status}.`);
+            }
         }
+
         return await result.json();
     }
 }

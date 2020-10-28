@@ -7,19 +7,21 @@ import {appendFromLS} from './momentum.js';
 const city = document.querySelector('.city'),
   icon = document.querySelector('.icon'),
   degrees = document.querySelector('.degrees'),
-  humidity = document.querySelector('.humidity');
+  humidity = document.querySelector('.humidity'),
+  refresh = document.querySelector('.refresh-icon');
+console.log(refresh)
 
 const forecast = new WeatherService();
 
 function getWeatherFromLS() {
     if (!localStorage.getItem('weather')) {
         return;
+    } else {
+        let weatherData = JSON.parse(localStorage.getItem ("weather"));
+        degrees.textContent = weatherData.degrees;
+        icon.classList.add(weatherData.icon);
+        humidity.textContent = weatherData.humidity;
     }
-
-    let weatherData = JSON.parse(localStorage.getItem ("weather"));
-    degrees.textContent = weatherData.degrees;
-    icon.classList.add(weatherData.icon);
-    humidity.textContent = weatherData.humidity;
 }
 
 
@@ -41,25 +43,14 @@ city.addEventListener('keydown', e => {
 
         forecast.getWeather(e.target.textContent)
           .then(res => {
-
-              localStorage.setItem('weather', JSON.stringify(
-                {
-                    degrees: `${res.main.temp}°C\``,
-                    icon: `owf-${res.weather[0].id}`,
-                    humidity: res.weather[0].description,
-                }));
-
+              addWeatherToLS(res)
               getWeatherFromLS();
+              toggleRefreshIcon();
 
           })
           .catch(err => {
-              degrees.textContent = ``;
-              icon.className = 'icon owf';
-              humidity.textContent = '';
-              e.target.textContent = err;
-              console.log(e.target.textContent = err);
-              localStorage.removeItem('city');
-              localStorage.removeItem('weather');
+              ifPromiseReject(err, e.target)
+              toggleRefreshIcon();
           });
 
         e.target.value = '';
@@ -67,5 +58,49 @@ city.addEventListener('keydown', e => {
     }
 })
 
+function toggleRefreshIcon() {
+    if (localStorage.getItem('city') !== null) {
+        refresh.classList.remove('hide');
+    } else {
+        refresh.classList.add('hide');
+    }
+}
+
+function addWeatherToLS(promiseResponse) {
+    localStorage.setItem('weather', JSON.stringify(
+      {
+          degrees: `${Math.round(promiseResponse.main.temp)}°C\``,
+          icon: `owf-${promiseResponse.weather[0].id}`,
+          humidity: promiseResponse.weather[0].description,
+      }));
+}
+
+function ifPromiseReject(promiseError, domElem = city) {
+    degrees.textContent = ``;
+    icon.className = 'icon owf';
+    humidity.textContent = '';
+    console.log('domElem');
+    console.log(domElem);
+    console.log('domElem');
+    domElem.textContent = promiseError;
+    localStorage.removeItem('city');
+    localStorage.removeItem('weather');
+}
+
+refresh.addEventListener('click', e => {
+
+    forecast.getWeather(localStorage.getItem('city'))
+      .then(res => {
+          addWeatherToLS(res)
+          getWeatherFromLS();
+          toggleRefreshIcon();
+      })
+      .catch(err => {
+          ifPromiseReject(err)
+          toggleRefreshIcon();
+      });
+})
+
 appendFromLS('city', city);
 getWeatherFromLS();
+toggleRefreshIcon();

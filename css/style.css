@@ -85,6 +85,19 @@ h2 {
     background-color: rgba(24, 22, 22, 0.5);
 }
 
+.weather__refresh-icon {
+    margin: auto;
+    width: 25px;
+}
+
+.weather__refresh-icon img {
+    width: 100%;
+}
+
+.hide {
+    display: none;
+}
+
 @media(max-width: 700px) {
     #time {
         font-size: 6rem;

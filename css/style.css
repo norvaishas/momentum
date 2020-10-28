@@ -6,13 +6,9 @@
 
 body {
     font-family: 'Quicksand', sans-serif;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
     height: 100vh;
-    color: #303438;
+    /*color: #303438;*/
+    color: rgb(180, 173, 164);
 }
 
 #time {
@@ -34,8 +30,14 @@ h2 {
     right: 20px;
 }
 
+#name {
+    display: inline-block;
+}
+
 #name, #focus {
+    min-width: 206px;
     outline: none;
+    /*border-bottom: 1px solid white;*/
 }
 
 .buttons {
@@ -48,6 +50,39 @@ h2 {
 .bg-button {
     font-weight: bold;
     font-size: 24px;
+}
+
+.opacity-layout {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+
+    height: 100vh;
+    width: 100%;
+    /*background-color: rgba(0, 0, 0, .4);*/
+    /*background-color: rgba(13, 13, 13, 0.4);*/
+    background-color: rgba(22, 22, 22, 0.4);
+    background-image: url(../assets/overlay.png);
+}
+
+/*Weather*/
+
+.weather {
+    width: 170px;
+    height: 100px;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+
+    background-color: rgba(24, 22, 22, 0.2);
+    backdrop-filter: blur(100px);
+    border-radius: 20%;
+}
+
+.weather:hover {
+    background-color: rgba(24, 22, 22, 0.5);
 }
 
 @media(max-width: 700px) {

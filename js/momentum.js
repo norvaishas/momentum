@@ -5,6 +5,7 @@ const time = document.querySelector('#time'),
   date = document.querySelector('#date'),
   changeBgBtn = document.querySelectorAll('.bg-button');
 
+
 const days = [
     'Понедельник',
     'Вторник',
@@ -35,6 +36,13 @@ let timeOfDay = '';
 let difference = 0;
 let greetText = '';
 
+export function appendFromLS(keyName, elem) {
+    if (localStorage.getItem(keyName) === null || localStorage.getItem(keyName) === '') {
+        elem.textContent = `[Enter ${keyName[0].toUpperCase() + keyName.slice(1)}]`;
+    } else {
+        elem.textContent = localStorage.getItem(keyName);
+    }
+}
 function getTimeOfDay(time) {
     if (time >= 6 && time < 12) {
         timeOfDay = 'morning';
@@ -55,12 +63,12 @@ function getTimeOfDay(time) {
     }
     return {timeOfDay, difference, greetText};
 }
+
 getTimeOfDay(globalHours);
 
 // Получение рандомной картинки для текущего времени суток
 const mixArray = arr => arr.sort(() => .5 - Math.random());
 let bg = mixArray(backgroundsUrls)[globalHours - difference];
-
 
 const appendZero = num => num < 10 ? `0${num}` : num;
 
@@ -83,8 +91,8 @@ function initTimer() {
     date.innerHTML = `${dayOfWeek}, ${dayOfMonth} ${month} ${year}`;
     time.innerHTML = `${appendZero(hours)}:${appendZero(minutes)}:${appendZero(seconds)}`;
     greeting.innerHTML = greetText;
-    changeBg();
 
+    changeBg();
     setTimeout(initTimer, 1000);
 }
 
@@ -112,42 +120,31 @@ changeBgBtn.forEach(btn => {
         changeBg();
         console.log('время = ', globalHours, timeOfDay);
     })
-})
+});
 
-function getFromLS(keyName, elem) {
-    if (localStorage.getItem(keyName) === null || localStorage.getItem(keyName) === '') {
-        elem.textContent = `[Enter ${keyName[0].toUpperCase() + keyName.slice(1)}]`;
-    } else {
-        elem.textContent = localStorage.getItem(keyName);
-    }
-}
-
-// ENTER
-name.addEventListener('keydown', e => {
+// Этот обработчик надо повесить еще и на #focus.
+[name, focus].forEach(btn => btn.addEventListener('keydown', e => {
     if (e.keyCode === 13) {
         e.preventDefault();
-        // Записал в ЛС
-        localStorage.setItem('name', name.innerHTML);
+        localStorage.setItem(e.target.dataset.name, e.target.innerHTML);
+        e.target.blur();
     }
-})
+}));
 
-name.addEventListener('focus', e => {
-    console.log('focus', e.target);
-    // e.target.style.cssText = "color: red; border-bottom: 1px solid black; min-width: 30px;";
-    setTimeout(() => {
-        e.target.selectionStart = name.selectionEnd = 3;
-    });
+// Очитска при фокусе
+[name, focus].forEach(btn => btn.addEventListener('focus', e => {
+    e.target.style.cssText = "border-bottom: 1px solid white;";
     e.target.innerHTML = '';
-})
+}));
 
-name.addEventListener('blur', e => {
-    console.log('unfocus');
-    getFromLS('name', name);
-})
-
+// Получение старого значения при расфокусе
+[name, focus].forEach(btn => btn.addEventListener('blur', e => {
+    appendFromLS(btn.dataset.name, btn);
+    e.target.style.cssText = "border: none;";
+}));
 
 // Run
 initTimer();
-getFromLS('name', name);
-getFromLS('focus', focus);
+appendFromLS('name', name);
+appendFromLS('focus', focus);
 changeBg();

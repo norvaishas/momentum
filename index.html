@@ -6,36 +6,40 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/owfont-regular.css">
     <link rel="stylesheet" href="css/style.css">
     <title>Momentum</title>
 </head>
 <body>
-<time id="time"></time>
-<h1>
-    <span id="greeting">Good Moment</span>
-    <p contenteditable="true" id="name"></p>
-</h1>
+<div class="opacity-layout">
+    <time id="time"></time>
+    <h1>
+        <span id="greeting">Good Moment</span>
+        <span contenteditable="true" data-name="name" id="name"></span>
+    </h1>
 
-<h2>
-    <span>What is your focus today?</span>
-    <p contenteditable="true" onfocus="this.innerHTML=''" id="focus"></p>
-</h2>
+    <h2>
+        <span>What is your focus today?</span>
+        <p contenteditable="true" data-name="focus" id="focus"></p>
+    </h2>
 
-<h2 id="date"></h2>
-<div class="buttons">
-    <div class="bg-button">Prev BG</div>
-    <div class="bg-button">Next BG</div>
-</div>
-
-<input type="text" class="city">
-<div class="output">
-    <div class="deg"></div>
-    <div class="icon">
-        <img src="" alt="">
+    <h2 id="date"></h2>
+    <div class="buttons">
+        <div class="bg-button">Prev BG</div>
+        <div class="bg-button">Next BG</div>
     </div>
+
+
+    <div class="weather">
+        <div class="city" data-name="city" contenteditable>Введите город</div>
+        <div class="icon owf"></div>
+        <div class="degrees"></div>
+        <div class="humidity"></div>
+    </div>
+
 </div>
 
-<script src="./js/momentum.js"></script>
-<script src="./js/weather.js"></script>
+<script src="./js/momentum.js" type="module"></script>
+<script src="./js/weather.js" type="module"></script>
 </body>
 </html>

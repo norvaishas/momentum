@@ -6,7 +6,7 @@
 
 body {
     font-family: 'Quicksand', sans-serif;
-    height: 100vh;
+    /*height: 100vh;*/
     /*color: #303438;*/
     color: rgb(180, 173, 164);
 }
@@ -20,14 +20,11 @@ h1 {
 }
 
 h2 {
-    margin-bottom: .5rem;
     opacity: .6;
 }
 
 #date {
-    position: absolute;
-    bottom: 20px;
-    right: 20px;
+    font-size: 16px;
 }
 
 #name {
@@ -35,7 +32,8 @@ h2 {
 }
 
 #name, #focus {
-    min-width: 206px;
+    min-width: 115px;
+    /*min-width: 206px;*/
     outline: none;
     /*border-bottom: 1px solid white;*/
 }
@@ -44,7 +42,6 @@ h2 {
     width: 90%;
     display: flex;
     justify-content: space-between;
-    cursor: pointer;
 }
 
 .bg-button {
@@ -65,6 +62,7 @@ h2 {
     text-decoration: none;
     transition: background-color 0.8s ease-in-out,
     color 0.8s ease-in-out;
+    cursor: pointer;
 }
 
 .bg-button:hover, .bg-button:active {
@@ -79,32 +77,40 @@ h2 {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: space-around;
     text-align: center;
-
-    height: 100vh;
+    min-height: 100vh;
     width: 100%;
-    /*background-color: rgba(0, 0, 0, .4);*/
-    /*background-color: rgba(13, 13, 13, 0.4);*/
     background-color: rgba(22, 22, 22, 0.4);
     background-image: url(../assets/overlay.png);
+}
+
+.row {
+    width: 95%;
+    display: flex;
+    justify-content: space-between;
+    padding-top: 10px;
 }
 
 /*Weather*/
 
 .weather {
+    position: relative;
     display: flex;
+    width: 220px;
+    height: 90px;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    width: 250px;
-    height: 85px;
+    background-color: rgba(24, 22, 22, 0.2);
+    border-radius: 20%;
+}
+
+.weather__refresh-icon {
     position: absolute;
     top: 10px;
-    right: 10px;
-    background-color: rgba(24, 22, 22, 0.2);
-    backdrop-filter: blur(100px);
-    border-radius: 20%;
+    right: 15px;
+    width: 25px;
 }
 
 .wrap {
@@ -113,18 +119,11 @@ h2 {
     flex-wrap: wrap;
     justify-content: space-evenly;
     align-items: end;
+    margin-top: 10px;
 }
 
 .weather:hover {
     background-color: rgba(24, 22, 22, 0.5);
-}
-
-.weather__refresh-icon {
-    position: absolute;
-    top: 10px;
-    right: 15px;
-    /*margin: auto;*/
-    width: 25px;
 }
 
 .weather__refresh-icon img {
@@ -137,51 +136,44 @@ h2 {
 
 /*Quotes*/
 .quote {
-    margin-top: 20px;
+    position: relative;
+    min-width: 60%;
     max-width: 65%;
     min-height: 120px;
-    position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-
-    background-color: rgba(24, 22, 22, 0.2);
-    /*backdrop-filter: blur(100px);*/
-    border-radius: 20%;
+    padding: 35px 15px 15px;
+    background-color: rgba(24, 22, 22, 0.4);
+    border-radius: 33px;
 }
 
 .quote-author {
     margin-left: auto;
     margin-right: 15px;
+    margin-top: 15px;
     font-weight: bold;
     font-style: italic;
 }
 
 
 .next-quote {
+    display: block;
+    margin: 20px 0;
     font-weight: bold;
     border: 3px solid 	#363636;
     text-decoration: none;
     transition: background-color 0.8s ease-in-out,
     color 0.8s ease-in-out;
+    padding: 15px;
+    color: 	#b4ada4;
+    text-align: center;
 }
 
 
 .next-quote {
-    display: block;
-    margin-top:45px;
-    /*width: 350px;*/
-    padding: 15px;
-    color: 	#b4ada4;
-    font-weight: bold;
-    /*font-family: Arial Unicode MS, sans-serif;*/
-    border: 3px solid 	#363636;
-    text-align: center;
-    /*outline:  1px solid #828282;*/
-    text-decoration: none;
-    transition: background-color 0.8s ease-in-out,
-    color 0.8s ease-in-out;
+
 }
 
 .next-quote:hover,.next-quote:active {
@@ -203,11 +195,6 @@ h2 {
         height: 90px;
     }
 
-    .next-quote {
-        display: block;
-        margin-top: 10px;
-    }
-
 
 }
 
@@ -216,7 +203,15 @@ h2 {
         font-size: 4.5rem;
     }
 
+    h1 {
+        margin-bottom: 1.2rem;
+    }
+
     h2 {
         font-size: 18px;
+    }
+
+    .quote {
+        min-height: auto;
     }
 }

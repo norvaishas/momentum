@@ -12,6 +12,22 @@
 </head>
 <body>
 <div class="opacity-layout">
+    <div class="row">
+        <h2 id="date"></h2>
+        <div class="weather">
+            <div class="city" data-name="city" contenteditable>Введите город</div>
+            <div class="wrap">
+                <div class="weather__refresh-icon refresh-icon hide">
+                    <img src="./assets/weather/refresh.png" alt="refresh weather">
+                </div>
+                <div class="icon owf"></div>
+                <div class="degrees"></div>
+                <div class="humidity"></div>
+                <div class="wind"></div>
+                <div class="description"></div>
+            </div>
+        </div>
+    </div>
     <time id="time"></time>
     <h1>
         <span id="greeting">Good Moment</span>
@@ -23,25 +39,9 @@
         <p contenteditable="true" data-name="focus" id="focus"></p>
     </h2>
 
-    <h2 id="date"></h2>
     <div class="buttons">
         <a class="bg-button"><<</a>
         <a class="bg-button">>></a>
-    </div>
-
-
-    <div class="weather">
-        <div class="city" data-name="city" contenteditable>Введите город</div>
-        <div class="wrap">
-            <div class="weather__refresh-icon refresh-icon hide">
-                <img src="./assets/weather/refresh.png" alt="refresh weather">
-            </div>
-            <div class="icon owf"></div>
-            <div class="degrees"></div>
-            <div class="humidity"></div>
-            <div class="wind"></div>
-            <div class="description"></div>
-        </div>
     </div>
 
     <div class="quote">
@@ -49,6 +49,7 @@
         <div class="quote-author"></div>
     </div>
     <a class="next-quote" href="#">Next Quote</a>
+
 
 </div>
 

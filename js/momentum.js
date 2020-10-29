@@ -177,24 +177,24 @@ let quoteText = document.querySelector('.quote-text'),
 const nextQuoteBtn = document.querySelector('.next-quote');
 
 async function setQuote() {
-    const url = 'https://cors-anywhere.herokuapp.com/https://api.forismatic.com/api/1.0/?method=getQuote&format=json&lang=en'
-    let res = await fetch(url);
+    const ur = 'https://favqs.com/api/qotd';
+    let res = await fetch(ur);
+    console.log(res);
     return await res.json();
 }
 
 setQuote()
   .then(res => {
-    console.log(res);
-    quoteText.innerHTML = res.quoteText;
-    quoteAuthor.innerHTML = res.quoteAuthor;
+    quoteText.innerHTML = res.quote.body;
+    quoteAuthor.innerHTML = res.quote.author;
 });
 
 nextQuoteBtn.addEventListener('click', (e) => {
     setQuote()
       .then(res => {
         console.log(res);
-        quoteText.innerHTML = res.quoteText;
-        quoteAuthor.innerHTML = res.quoteAuthor;
+          quoteText.innerHTML = res.quote.body;
+          quoteAuthor.innerHTML = res.quote.author;
     });
 })
 

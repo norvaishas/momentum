@@ -30,7 +30,8 @@ function getWeatherFromLS() {
 
 city.addEventListener('focus', e => {
     e.target.textContent = '';
-    e.target.style.cssText = "border-bottom: 1px solid white; outline: none;";
+    e.target.style.cssText = "min-width: 50px; border-bottom: 1px solid white; outline: none;";
+    // document.querySelector('.wrap')
     // e.target.innerHTML = '';
 })
 

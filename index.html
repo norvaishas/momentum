@@ -25,22 +25,30 @@
 
     <h2 id="date"></h2>
     <div class="buttons">
-        <div class="bg-button">Prev BG</div>
-        <div class="bg-button">Next BG</div>
+        <a class="bg-button"><<</a>
+        <a class="bg-button">>></a>
     </div>
 
 
     <div class="weather">
-        <div class="weather__refresh-icon refresh-icon hide">
-            <img src="./assets/weather/refresh.png" alt="refresh weather">
-        </div>
         <div class="city" data-name="city" contenteditable>Введите город</div>
-        <div class="icon owf"></div>
-        <div class="degrees"></div>
-        <div class="description"></div>
-        <div class="humidity"></div>
-        <div class="wind"></div>
+        <div class="wrap">
+            <div class="weather__refresh-icon refresh-icon hide">
+                <img src="./assets/weather/refresh.png" alt="refresh weather">
+            </div>
+            <div class="icon owf"></div>
+            <div class="degrees"></div>
+            <div class="humidity"></div>
+            <div class="wind"></div>
+            <div class="description"></div>
+        </div>
     </div>
+
+    <div class="quote">
+        <div class="quote-text"></div>
+        <div class="quote-author"></div>
+    </div>
+    <a class="next-quote" href="#">Next Quote</a>
 
 </div>
 

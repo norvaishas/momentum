@@ -126,7 +126,7 @@ changeBgBtn.forEach(btn => {
         // Функция меняющая час назад или вперед
         switch (e.target.textContent) {
 
-            case 'Next BG':
+            case '>>':
                 localHours++;
                 if (localHours > 23) localHours = 0;
                 bg++;
@@ -134,7 +134,7 @@ changeBgBtn.forEach(btn => {
                 if (bg > Math.max(...backgroundsUrls)) bg = 0;
                 break;
 
-            case 'Prev BG':
+            case '<<':
                 localHours--;
                 if (localHours < 0) localHours = 23;
                 bg--;
@@ -169,6 +169,34 @@ changeBgBtn.forEach(btn => {
     appendFromLS(btn.dataset.name, btn);
     e.target.style.cssText = "border: none;";
 }));
+
+
+//Quote-block
+let quoteText = document.querySelector('.quote-text'),
+  quoteAuthor = document.querySelector('.quote-author');
+const nextQuoteBtn = document.querySelector('.next-quote');
+
+async function setQuote() {
+    const url = 'https://cors-anywhere.herokuapp.com/https://api.forismatic.com/api/1.0/?method=getQuote&format=json&lang=en'
+    let res = await fetch(url);
+    return await res.json();
+}
+
+setQuote()
+  .then(res => {
+    console.log(res);
+    quoteText.innerHTML = res.quoteText;
+    quoteAuthor.innerHTML = res.quoteAuthor;
+});
+
+nextQuoteBtn.addEventListener('click', (e) => {
+    setQuote()
+      .then(res => {
+        console.log(res);
+        quoteText.innerHTML = res.quoteText;
+        quoteAuthor.innerHTML = res.quoteAuthor;
+    });
+})
 
 // Run
 initTimer();

@@ -7,9 +7,10 @@ import {appendFromLS} from './momentum.js';
 const city = document.querySelector('.city'),
   icon = document.querySelector('.icon'),
   degrees = document.querySelector('.degrees'),
+  description = document.querySelector('.description'),
   humidity = document.querySelector('.humidity'),
+  wind = document.querySelector('.wind'),
   refresh = document.querySelector('.refresh-icon');
-console.log(refresh)
 
 const forecast = new WeatherService();
 
@@ -20,7 +21,9 @@ function getWeatherFromLS() {
         let weatherData = JSON.parse(localStorage.getItem ("weather"));
         degrees.textContent = weatherData.degrees;
         icon.classList.add(weatherData.icon);
+        description.textContent = weatherData.description;
         humidity.textContent = weatherData.humidity;
+        wind.textContent = weatherData.wind;
     }
 }
 
@@ -59,9 +62,12 @@ city.addEventListener('keydown', e => {
 })
 
 function toggleRefreshIcon() {
+    // console.trace('Включение иконки')
     if (localStorage.getItem('city') !== null) {
+        // console.log('город ЕСТЬ, ПОКАЗЫВАЕМ иконку');
         refresh.classList.remove('hide');
     } else {
+        // console.log('города НЕТ, ПРЯЧЕМ иконку')
         refresh.classList.add('hide');
     }
 }
@@ -71,17 +77,21 @@ function addWeatherToLS(promiseResponse) {
       {
           degrees: `${Math.round(promiseResponse.main.temp)}°C\``,
           icon: `owf-${promiseResponse.weather[0].id}`,
-          humidity: promiseResponse.weather[0].description,
+          description: promiseResponse.weather[0].description,
+          humidity: `${promiseResponse.main.humidity} %`,
+          wind: `${promiseResponse.wind.speed} m/s`,
       }));
 }
 
 function ifPromiseReject(promiseError, domElem = city) {
     degrees.textContent = ``;
     icon.className = 'icon owf';
+    description.textContent = '';
     humidity.textContent = '';
-    console.log('domElem');
+    wind.textContent = '';
+    /*console.log('domElem');
     console.log(domElem);
-    console.log('domElem');
+    console.log('domElem');*/
     domElem.textContent = promiseError;
     localStorage.removeItem('city');
     localStorage.removeItem('weather');

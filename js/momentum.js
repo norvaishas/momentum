@@ -5,36 +5,39 @@ const time = document.querySelector('#time'),
   date = document.querySelector('#date'),
   changeBgBtn = document.querySelectorAll('.bg-button');
 
-
 const days = [
-    'Понедельник',
-    'Вторник',
-    'Среда',
-    'Четверг',
-    'Пятница',
-    'Суббота',
-    'Воскресенье'
+    'Sunday',
+    'Monday',
+    'Tuesday',
+    'Wednesday',
+    'Thursday',
+    'Friday',
+    'Saturday'
 ];
+
 const months = [
-    'Января',
-    'Февраля',
-    'Марта',
-    'Апреля',
-    'Мая',
-    'Июня',
-    'Июля',
-    'Августа',
-    'Сентября',
-    'Октября',
-    'Ноября',
-    'Декабря'
+    'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December'
 ];
 const backgroundsUrls = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14'];
 
-let globalHours = new Date().getHours();
+let hours = new Date().getHours();
 let timeOfDay = '';
 let difference = 0;
 let greetText = '';
+let localHours = new Date().getHours();
+let localTimeOfDay = ''
+let bgWasChanged = false;
 
 export function appendFromLS(keyName, elem) {
     if (localStorage.getItem(keyName) === null || localStorage.getItem(keyName) === '') {
@@ -64,17 +67,31 @@ function getTimeOfDay(time) {
     return {timeOfDay, difference, greetText};
 }
 
-getTimeOfDay(globalHours);
+// Переделать по DRY
+function getLocalTimeOfDay(time) {
+    if (time >= 6 && time < 12) {
+        localTimeOfDay = 'morning';
+    } else if (time >= 12 && time < 18) {
+        localTimeOfDay = 'day';
+    } else if (time >= 18 && time <= 23) {
+        localTimeOfDay = 'evening';
+    } else if (time < 6) {
+        localTimeOfDay = 'night';
+    }
+    return {localTimeOfDay};
+}
+
+getTimeOfDay(hours);
 
 // Получение рандомной картинки для текущего времени суток
 const mixArray = arr => arr.sort(() => .5 - Math.random());
-let bg = mixArray(backgroundsUrls)[globalHours - difference];
+let bg = mixArray(backgroundsUrls)[hours - difference];
 
 const appendZero = num => num < 10 ? `0${num}` : num;
 
 // Смена фона
-function changeBg() {
-    document.body.style.backgroundImage = `url(\'assets/${timeOfDay}/${bg}.jpg\')`;
+function changeBg(period = timeOfDay) {
+    document.body.style.backgroundImage = `url(\'assets/${period}/${bg}.jpg\')`;
 }
 
 function initTimer() {
@@ -85,14 +102,22 @@ function initTimer() {
       year = now.getFullYear(),
       month = months[now.getMonth()],
       dayOfMonth = now.getDate(),
-      dayOfWeek = days[now.getDay() - 1];
+      dayOfWeek = days[now.getDay()];
 
     // Render
     date.innerHTML = `${dayOfWeek}, ${dayOfMonth} ${month} ${year}`;
     time.innerHTML = `${appendZero(hours)}:${appendZero(minutes)}:${appendZero(seconds)}`;
     greeting.innerHTML = greetText;
 
-    changeBg();
+    // Когда час меняется автоматически, фон не сменится т.к. функция запускается с локальным временем
+    if (bgWasChanged) {
+        // console.log('локально')
+        changeBg(localTimeOfDay);
+    } else {
+        // console.log('глобально')
+        changeBg();
+    }
+
     setTimeout(initTimer, 1000);
 }
 
@@ -102,27 +127,29 @@ changeBgBtn.forEach(btn => {
         switch (e.target.textContent) {
 
             case 'Next BG':
-                globalHours++;
-                if (globalHours > 23) globalHours = 0;
+                localHours++;
+                if (localHours > 23) localHours = 0;
                 bg++;
-                getTimeOfDay(globalHours);
+                getLocalTimeOfDay(localHours);
                 if (bg > Math.max(...backgroundsUrls)) bg = 0;
                 break;
 
-                case 'Prev BG':
-                    globalHours--;
-                    if (globalHours < 0) globalHours = 23;
-                    bg--;
-                    getTimeOfDay(globalHours);
-                    if (bg < Math.min(...backgroundsUrls)) bg = 14;
+            case 'Prev BG':
+                localHours--;
+                if (localHours < 0) localHours = 23;
+                bg--;
+                getLocalTimeOfDay(localHours);
+                if (bg < Math.min(...backgroundsUrls)) bg = 14;
                 break;
         }
-        changeBg();
-        console.log('время = ', globalHours, timeOfDay);
+        changeBg(localTimeOfDay);
+        bgWasChanged = true;
+        console.log('ГЛОБПЛЬНОЕ время = ', hours, timeOfDay);
+        console.log('ЛОКАЛЬНОЕ время = ', localHours, localTimeOfDay);
     })
 });
 
-// Этот обработчик надо повесить еще и на #focus.
+
 [name, focus].forEach(btn => btn.addEventListener('keydown', e => {
     if (e.keyCode === 13) {
         e.preventDefault();

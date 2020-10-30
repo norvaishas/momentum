@@ -160,14 +160,14 @@ changeBgBtn.forEach(btn => {
 
 // Очитска при фокусе
 [name, focus].forEach(btn => btn.addEventListener('focus', e => {
-    e.target.style.cssText = "border-bottom: 1px solid white;";
+    e.target.classList.add('input-focus');
     e.target.innerHTML = '';
 }));
 
 // Получение старого значения при расфокусе
 [name, focus].forEach(btn => btn.addEventListener('blur', e => {
     appendFromLS(btn.dataset.name, btn);
-    e.target.style.cssText = "border: none;";
+    e.target.classList.remove('input-focus');
 }));
 
 

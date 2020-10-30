@@ -91,7 +91,14 @@ const appendZero = num => num < 10 ? `0${num}` : num;
 
 // Смена фона
 function changeBg(period = timeOfDay) {
-    document.body.style.backgroundImage = `url(\'assets/${period}/${bg}.jpg\')`;
+
+    const url = `assets/${period}/${bg}.jpg`;
+    const img = document.createElement('img');
+
+    img.src = url;
+    img.onload = () => {
+        document.body.style.backgroundImage = `url(${url})`;
+    };
 }
 
 function initTimer() {
@@ -126,7 +133,7 @@ changeBgBtn.forEach(btn => {
         // Функция меняющая час назад или вперед
         switch (e.target.textContent) {
 
-            case '>>':
+            case '>':
                 localHours++;
                 if (localHours > 23) localHours = 0;
                 bg++;
@@ -134,7 +141,7 @@ changeBgBtn.forEach(btn => {
                 if (bg > Math.max(...backgroundsUrls)) bg = 0;
                 break;
 
-            case '<<':
+            case '<':
                 localHours--;
                 if (localHours < 0) localHours = 23;
                 bg--;
@@ -144,8 +151,13 @@ changeBgBtn.forEach(btn => {
         }
         changeBg(localTimeOfDay);
         bgWasChanged = true;
-        console.log('ГЛОБПЛЬНОЕ время = ', hours, timeOfDay);
-        console.log('ЛОКАЛЬНОЕ время = ', localHours, localTimeOfDay);
+
+        changeBgBtn[0].classList.add('bg-disable');
+        changeBgBtn[1].classList.add('bg-disable');
+        setTimeout(() => {
+            changeBgBtn[0].classList.remove('bg-disable');
+            changeBgBtn[1].classList.remove('bg-disable');
+        }, 1500);
     })
 });
 

@@ -8,18 +8,13 @@ body {
     background-repeat: no-repeat;
     background-size: cover;
     font-family: 'Quicksand', sans-serif;
-    /*height: 100vh;*/
-    /*color: #303438;*/
     color: rgb(180, 173, 164);
+    transition: background-image 1.5s ease-in-out;
 }
 
 #time {
     font-size: 8rem;
 }
-
-/*h1 {
-    margin-bottom: 3rem;
-}*/
 
 h2 {
     opacity: .6;
@@ -71,11 +66,16 @@ h2 {
 }
 
 .bg-button:hover, .bg-button:active {
-    background-color: #363636;
+    background-color: rgba(24, 22, 22, 0.4);
     border: 3px solid 	#CFCFCF;
     color: #CFCFCF;
     transition: background-color 0.6s ease-in-out,
     color 0.6s ease-in-out;
+}
+
+.bg-disable {
+    pointer-events: none;
+     cursor: default;
 }
 
 .opacity-layout {
@@ -90,6 +90,7 @@ h2 {
     background-image: url(../assets/overlay.png);
     background-repeat: no-repeat;
     background-size: cover;
+    /*transition: background-image 1s ease-in-out;*/
 }
 
 .row {
@@ -111,6 +112,7 @@ h2 {
     align-items: center;
     background-color: rgba(24, 22, 22, 0.2);
     border-radius: 20%;
+    transition: background-color 0.3s ease-in;
 }
 
 .weather__refresh-icon {
@@ -154,6 +156,11 @@ h2 {
     padding: 35px 15px 15px;
     background-color: rgba(24, 22, 22, 0.4);
     border-radius: 33px;
+    transition: background-color 0.3s ease-in;
+}
+
+.quote:hover {
+    background-color: rgba(24, 22, 22, 0.6);
 }
 
 .quote-author {
